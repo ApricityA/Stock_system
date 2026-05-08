@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>QUANT_CORE - Trading Journal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-container": "#003a6b",
+                        "secondary-container": "#26a641",
+                        "error-container": "#93000a",
+                        "surface-container-high": "#272a30",
+                        "primary-fixed-dim": "#a2c9ff",
+                        "surface-bright": "#36393f",
+                        "on-tertiary-fixed-variant": "#93000d",
+                        "secondary": "#66df72",
+                        "tertiary-container": "#ff7b70",
+                        "on-secondary-fixed-variant": "#005318",
+                        "primary-container": "#58a6ff",
+                        "on-primary": "#00315c",
+                        "on-primary-fixed-variant": "#004882",
+                        "tertiary-fixed": "#ffdad6",
+                        "on-background": "#e0e2ea",
+                        "secondary-fixed": "#83fc8b",
+                        "tertiary": "#ffb4ac",
+                        "inverse-primary": "#0060aa",
+                        "surface-container": "#1c2025",
+                        "on-secondary-container": "#00320b",
+                        "inverse-surface": "#e0e2ea",
+                        "on-primary-fixed": "#001c38",
+                        "surface": "#101419",
+                        "outline-variant": "#414752",
+                        "inverse-on-surface": "#2d3136",
+                        "on-tertiary": "#690007",
+                        "surface-container-highest": "#32353b",
+                        "tertiary-fixed-dim": "#ffb4ac",
+                        "primary-fixed": "#d3e4ff",
+                        "on-tertiary-fixed": "#410002",
+                        "on-surface-variant": "#c0c7d4",
+                        "on-error-container": "#ffdad6",
+                        "outline": "#8b919d",
+                        "on-tertiary-container": "#790009",
+                        "secondary-fixed-dim": "#66df72",
+                        "primary": "#a2c9ff",
+                        "surface-container-low": "#181c21",
+                        "on-surface": "#e0e2ea",
+                        "on-secondary-fixed": "#002105",
+                        "on-secondary": "#00390e",
+                        "on-error": "#690005",
+                        "surface-variant": "#32353b",
+                        "surface-dim": "#101419",
+                        "surface-container-lowest": "#0b0e14",
+                        "surface-tint": "#a2c9ff",
+                        "error": "#ffb4ab",
+                        "background": "#101419"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "12px",
+                        "base": "4px",
+                        "sm": "8px",
+                        "xl": "32px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "data-tabular": ["Consolas", "Monaco", "monospace"],
+                        "body-sm": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "heading-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "data-tabular": ["13px", {"lineHeight": "1", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-caps": ["11px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "display-lg": ["32px", {"lineHeight": "1.25", "fontWeight": "600"}],
+                        "heading-md": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #101419; color: #e0e2ea; font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-size: 20px; vertical-align: middle; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #161b22; }
+        ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #414752; }
+    </style>
+</head>
+<body class="flex overflow-hidden">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full flex flex-col h-screen w-64 border-r border-[#30363d] bg-[#161b22] font-['Inter'] font-medium text-xs uppercase tracking-wider z-50">
+<div class="p-lg flex items-center gap-sm">
+<span class="font-black text-lg tracking-tighter text-[#f0f6fc]">QUANT_CORE</span>
+<span class="text-[10px] text-outline opacity-60">v2.4</span>
+</div>
+<div class="px-md mt-md">
+<button class="w-full py-sm bg-primary-container text-on-primary-container font-bold rounded-DEFAULT cursor-pointer active:opacity-80 transition-colors duration-150 uppercase tracking-widest text-[10px]">新建交易</button>
+</div>
+<nav class="flex-1 mt-lg space-y-1">
+<div class="px-md py-sm flex items-center gap-md text-[#8b949e] hover:text-[#f0f6fc] hover:bg-[#21262d] cursor-pointer transition-colors duration-150">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>仪表盘</span>
+</div>
+<div class="px-md py-sm flex items-center gap-md text-[#8b949e] hover:text-[#f0f6fc] hover:bg-[#21262d] cursor-pointer transition-colors duration-150">
+<span class="material-symbols-outlined" data-icon="filter_list">filter_list</span>
+<span>筛选器</span>
+</div>
+<div class="px-md py-sm flex items-center gap-md bg-[#0d1117] text-[#58a6ff] border-l-2 border-[#58a6ff] cursor-pointer transition-colors duration-150">
+<span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+<span>复盘日志</span>
+</div>
+<div class="px-md py-sm flex items-center gap-md text-[#8b949e] hover:text-[#f0f6fc] hover:bg-[#21262d] cursor-pointer transition-colors duration-150">
+<span class="material-symbols-outlined" data-icon="star">star</span>
+<span>自选股</span>
+</div>
+<div class="px-md py-sm flex items-center gap-md text-[#8b949e] hover:text-[#f0f6fc] hover:bg-[#21262d] cursor-pointer transition-colors duration-150">
+<span class="material-symbols-outlined" data-icon="notifications_active">notifications_active</span>
+<span>警报</span>
+</div>
+</nav>
+<div class="mt-auto border-t border-[#30363d] pt-md pb-lg">
+<div class="px-md py-sm flex items-center gap-md text-[#8b949e] hover:text-[#f0f6fc] hover:bg-[#21262d] cursor-pointer transition-colors duration-150">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>设置</span>
+</div>
+<div class="px-md py-sm flex items-center gap-md text-[#8b949e] hover:text-[#f0f6fc] hover:bg-[#21262d] cursor-pointer transition-colors duration-150">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span>支持</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 flex-1 flex flex-col h-screen overflow-hidden">
+<!-- TopNavBar -->
+<header class="h-14 border-b border-[#30363d] bg-[#161b22] flex justify-between items-center px-6 z-40">
+<div class="flex items-center gap-lg">
+<h1 class="font-['Inter'] text-sm font-bold text-on-surface uppercase tracking-widest">复盘日志终端</h1>
+<div class="flex items-center gap-sm bg-[#0d1117] px-md py-1 border border-[#30363d] rounded-DEFAULT">
+<span class="material-symbols-outlined text-[#8b949e] text-sm">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-xs w-48 text-on-surface" placeholder="搜索日志记录..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-lg">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-[#8b949e] hover:text-[#f0f6fc] cursor-pointer" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span class="material-symbols-outlined text-[#8b949e] hover:text-[#f0f6fc] cursor-pointer" data-icon="language">language</span>
+<span class="material-symbols-outlined text-[#8b949e] hover:text-[#f0f6fc] cursor-pointer" data-icon="grid_view">grid_view</span>
+</div>
+<div class="h-8 w-8 rounded-full overflow-hidden bg-surface-container-high border border-[#30363d]">
+<img alt="User avatar" class="w-full h-full object-cover" data-alt="A professional studio portrait of a technology executive with sharp focus and cinematic high-key lighting. The background is a soft, dark neutral gray that matches a modern dark-mode UI. The lighting highlights clean facial features, evoking a sense of reliability, intelligence, and technical mastery, consistent with a high-end financial software environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwYy4Td9KT7lQumq4Hfj0dEHoL-qaY6Ec836GpbRqs-9n-Dft0trMMD35bASnJ-b_9XvAEn0ks6c1R-8ExGVHiQ0IVH0JmieTyaPxYsMlfV62C9Bv2w51UdNZ56SsFQz9tv73CTakrMIew43GFfk-b8Ww3YWyvG0BK5en5y8zzyXXwX73QKCYbFCwQtK-fB8wUND941UHnJ8aCMM2zHCPB29f-XqkLzhqLX6epj2KHwFU4EV5B8jBh3rA3t-JcOl8yUcMk0NXZCQ5A"/>
+</div>
+</div>
+</header>
+<!-- Dynamic Content Section -->
+<section class="flex-1 overflow-hidden flex flex-col p-gutter gap-gutter bg-surface">
+<!-- Toolbar -->
+<div class="flex justify-between items-center shrink-0">
+<div class="flex gap-sm">
+<button class="bg-[#161b22] border border-[#30363d] px-md py-base text-label-caps text-on-surface flex items-center gap-xs hover:bg-[#21262d] transition-colors"><span class="material-symbols-outlined" style="font-size: 16px;">calendar_month</span>日历模式</button>
+<button class="bg-transparent border border-[#30363d] px-md py-base text-label-caps text-outline hover:bg-[#21262d] flex items-center gap-xs transition-colors"><span class="material-symbols-outlined" style="font-size: 16px;">view_list</span>列表模式</button>
+</div>
+<div class="text-xs font-data-tabular text-[#8b949e]">休市: <span class="text-secondary">交易中 (UTC)</span></div>
+</div>
+<!-- Main Split View Container -->
+<div class="flex-1 flex gap-gutter overflow-hidden">
+<!-- Left: Calendar Widget -->
+<div class="w-1/3 flex flex-col bg-[#161b22] rounded-DEFAULT border border-[#30363d] overflow-hidden">
+<header class="px-md py-sm border-b border-[#30363d] flex justify-between items-center shrink-0">
+<span class="text-label-caps font-bold">复盘日历</span>
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-outline cursor-pointer hover:text-on-surface">chevron_left</span>
+<span class="text-xs font-bold text-on-surface tracking-widest">2023年10月</span>
+<span class="material-symbols-outlined text-outline cursor-pointer hover:text-on-surface">chevron_right</span>
+</div>
+</header>
+<div class="flex-1 p-md">
+<!-- Calendar Grid -->
+<div class="grid grid-cols-7 gap-1 text-center">
+<!-- Weekdays -->
+<div class="py-sm text-[10px] font-bold text-[#8b949e]">一</div>
+<div class="py-sm text-[10px] font-bold text-[#8b949e]">二</div>
+<div class="py-sm text-[10px] font-bold text-[#8b949e]">三</div>
+<div class="py-sm text-[10px] font-bold text-[#8b949e]">四</div>
+<div class="py-sm text-[10px] font-bold text-[#8b949e]">五</div>
+<div class="py-sm text-[10px] font-bold text-tertiary-container">六</div>
+<div class="py-sm text-[10px] font-bold text-tertiary-container">日</div>
+<!-- Dates (Mockup) -->
+<div class="aspect-square flex flex-col items-center justify-center border border-transparent text-[#414752] text-xs">25</div>
+<div class="aspect-square flex flex-col items-center justify-center border border-transparent text-[#414752] text-xs">26</div>
+<div class="aspect-square flex flex-col items-center justify-center border border-transparent text-[#414752] text-xs">27</div>
+<div class="aspect-square flex flex-col items-center justify-center border border-transparent text-[#414752] text-xs">28</div>
+<div class="aspect-square flex flex-col items-center justify-center border border-transparent text-[#414752] text-xs">29</div>
+<div class="aspect-square flex flex-col items-center justify-center border border-transparent text-[#414752] text-xs">30</div>
+<div class="aspect-square flex flex-col items-center justify-center border border-transparent text-on-surface text-xs font-bold">1</div>
+<div class="aspect-square flex flex-col items-center justify-center border border-[#30363d] bg-[#0d1117] text-on-surface text-xs relative cursor-pointer hover:bg-[#21262d]">
+                                2<div class="absolute bottom-1 w-1 h-1 bg-[#58a6ff] rounded-full"></div>
+</div>
+<div class="aspect-square flex flex-col items-center justify-center border border-[#30363d] bg-[#0d1117] text-on-surface text-xs relative cursor-pointer hover:bg-[#21262d]">
+                                3<div class="absolute bottom-1 w-1 h-1 bg-[#58a6ff] rounded-full"></div>
+</div>
+<div class="aspect-square flex flex-col items-center justify-center border border-[#30363d] bg-[#0d1117] text-on-surface text-xs cursor-pointer hover:bg-[#21262d]">4</div>
+<div class="aspect-square flex flex-col items-center justify-center border border-[#30363d] bg-[#0d1117] text-on-surface text-xs relative cursor-pointer hover:bg-[#21262d]">
+                                5<div class="absolute bottom-1 w-1 h-1 bg-[#58a6ff] rounded-full"></div>
+</div>
+<div class="aspect-square flex flex-col items-center justify-center border border-[#30363d] bg-[#0d1117] text-on-surface text-xs relative cursor-pointer hover:bg-[#21262d]">
+                                6<div class="absolute bottom-1 w-1 h-1 bg-[#58a6ff] rounded-full"></div>
+</div>
+<div class="aspect-square flex flex-col items-center justify-center border border-transparent text-on-surface text-xs font-bold">7</div>
+<div class="aspect-square flex flex-col items-center justify-center border border-transparent text-on-surface text-xs font-bold">8</div>
+<!-- Today Highlight -->
+<div class="aspect-square flex flex-col items-center justify-center border-2 border-primary-container bg-[#21262d] text-primary-container text-xs font-black cursor-pointer">
+                                9
+                            </div>
+<!-- Future Dates -->
+<div class="aspect-square flex flex-col items-center justify-center border border-[#30363d] bg-[#0d1117] text-outline opacity-40 text-xs">10</div>
+<div class="aspect-square flex flex-col items-center justify-center border border-[#30363d] bg-[#0d1117] text-outline opacity-40 text-xs">11</div>
+<div class="aspect-square flex flex-col items-center justify-center border border-[#30363d] bg-[#0d1117] text-outline opacity-40 text-xs">12</div>
+<div class="aspect-square flex flex-col items-center justify-center border border-[#30363d] bg-[#0d1117] text-outline opacity-40 text-xs">13</div>
+<div class="aspect-square flex flex-col items-center justify-center border border-transparent text-on-surface text-xs font-bold opacity-40">14</div>
+<div class="aspect-square flex flex-col items-center justify-center border border-transparent text-on-surface text-xs font-bold opacity-40">15</div>
+</div>
+<!-- Mini Stats Card in Sidebar -->
+<div class="mt-xl space-y-sm">
+<div class="bg-[#0d1117] p-md border border-[#30363d]">
+<div class="text-[10px] text-outline uppercase font-bold mb-xs">Monthly Win Rate</div>
+<div class="text-xl font-data-tabular text-secondary">64.5%</div>
+</div>
+<div class="bg-[#0d1117] p-md border border-[#30363d]">
+<div class="text-[10px] text-outline uppercase font-bold mb-xs">Total P&amp;L (Oct)</div>
+<div class="text-xl font-data-tabular text-secondary">+$12,408.00</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right: Review Editor -->
+<div class="flex-1 flex flex-col bg-[#161b22] rounded-DEFAULT border border-[#30363d] overflow-hidden">
+<header class="px-md py-sm border-b border-[#30363d] flex justify-between items-center shrink-0">
+<div class="flex flex-col">
+<span class="text-label-caps font-bold">当日复盘编辑</span>
+<span class="text-[10px] font-data-tabular text-outline">2023年10月09日 — 周一交易时段</span>
+</div>
+<div class="flex items-center gap-md">
+<div class="flex gap-xs items-center mr-md">
+<span class="text-[10px] text-outline uppercase font-bold">市场情绪:</span>
+<div class="flex gap-xs">
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">市场情绪:</span>
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-outline">star</span>
+</div>
+</div>
+<button class="bg-primary-container text-on-primary-container text-[10px] font-black px-lg py-sm uppercase tracking-widest hover:brightness-110">保存记录</button>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto p-md space-y-lg custom-scrollbar">
+<div class="grid grid-cols-2 gap-md">
+<!-- Market Summary -->
+<div class="flex flex-col space-y-sm">
+<label class="text-[10px] font-black text-[#8b949e] uppercase tracking-wider">大盘总结</label>
+<textarea class="flex-1 min-h-[140px] bg-[#0d1117] border border-[#30363d] rounded-DEFAULT p-md text-sm text-on-surface focus:border-primary-container focus:ring-0 resize-none font-body-sm" placeholder="总结今日指数表现、热点板块、情绪描述..."></textarea>
+</div>
+<!-- Limit Statistics -->
+<div class="flex flex-col space-y-sm">
+<label class="text-[10px] font-black text-[#8b949e] uppercase tracking-wider">涨跌停统计</label>
+<textarea class="flex-1 min-h-[140px] bg-[#0d1117] border border-[#30363d] rounded-DEFAULT p-md text-data-tabular text-on-surface focus:border-primary-container focus:ring-0 resize-none" placeholder="输入今日涨停、跌停家数及其他宽度指标..."></textarea>
+</div>
+</div>
+<!-- Individual Review -->
+<div class="flex flex-col space-y-sm">
+<label class="text-[10px] font-black text-[#8b949e] uppercase tracking-wider">个股复盘与标的分析</label>
+<div class="bg-[#0d1117] border border-[#30363d] rounded-DEFAULT flex flex-col overflow-hidden">
+<div class="flex border-b border-[#30363d] bg-surface-container-low px-md py-xs gap-md">
+<span class="text-[10px] font-bold text-primary-container">NVDA (+4.2%)</span>
+<span class="text-[10px] font-bold text-tertiary">TSLA (-1.8%)</span>
+<span class="text-[10px] font-bold text-outline">+ 添加标的</span>
+</div>
+<textarea class="min-h-[200px] bg-transparent border-none p-md text-sm text-on-surface focus:ring-0 resize-none font-body-sm" placeholder="详细记录关注个股今日走势、买卖逻辑、操作得失..."></textarea>
+</div>
+</div>
+<!-- Tomorrow's Plan -->
+<div class="flex flex-col space-y-sm">
+<label class="text-[10px] font-black text-secondary uppercase tracking-wider flex items-center gap-xs"><span class="material-symbols-outlined" style="font-size: 14px;">next_plan</span>明日策略计划</label>
+<textarea class="min-h-[120px] bg-[#0d1117] border border-secondary/30 rounded-DEFAULT p-md text-sm text-on-surface focus:border-secondary focus:ring-0 resize-none font-body-sm" placeholder="明日关注板块、重点个股及具体操作计划..."></textarea>
+</div>
+<!-- Attached Charts -->
+<div class="flex flex-col space-y-sm">
+<label class="text-[10px] font-black text-[#8b949e] uppercase tracking-wider">盘中截图</label>
+<div class="grid grid-cols-3 gap-sm">
+<div class="aspect-video bg-[#0d1117] border border-dashed border-[#30363d] flex items-center justify-center group cursor-pointer hover:bg-[#1c2025]">
+<img alt="Market chart" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" data-alt="A highly detailed candlestick trading chart showing volatile price action in a dark terminal environment. Bright green and red bars dominate the screen with thin technical indicator lines in cyan and magenta. The visual style is crisp and technical, mimicking a high-performance professional trading software interface used for deep market analysis." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBiThBmGveMPz1ZTlWbM1hsbvGsqOOSwK1yonuTqz3R-P3GM86K9mdjjeNS-QRy4TxnDGdvScEiPfVMTqLPljQreqA5B_qIK54dqzwssfjxhII4bQsVSRQ6MyxLj6EbsHcyG6YbwVuSSGmkkpACylyxK_X_Ubnhvtra6-NgkXo0Bp5zufg7N0csK5OSj75l17qEKcZ2v-flGaQYG8r2skRXzLHFe5Bxg1jFm3vzlI9KkXxFeEd7JR_gjKSqK--gX0L4tqgAuXA5ptQO"/>
+</div>
+<div class="aspect-video bg-[#0d1117] border border-dashed border-[#30363d] flex flex-col items-center justify-center text-outline gap-xs hover:border-primary-container hover:text-primary-container transition-colors">
+<span class="material-symbols-outlined">add_a_photo</span>
+<span class="text-[10px] uppercase font-bold">Drop Image</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- List Mode Overlay (Hidden by Default in logic, but here for structure) -->
+<!-- To show: add class flex, remove from main container or toggle visibility -->
+<div class="hidden fixed inset-0 z-40 bg-surface ml-64 mt-14 p-gutter overflow-y-auto" id="list-mode-view">
+<div class="max-w-4xl mx-auto space-y-md">
+<div class="flex justify-between items-center mb-lg">
+<h2 class="text-heading-md text-on-surface">Journal Archives</h2>
+<div class="flex gap-sm">
+<select class="bg-[#161b22] border border-[#30363d] text-xs px-md py-1 rounded-DEFAULT text-on-surface outline-none">
+<option>All Sentiments</option>
+<option>Bullish</option>
+<option>Neutral</option>
+<option>Bearish</option>
+</select>
+</div>
+</div>
+<!-- Journal Cards -->
+<div class="space-y-sm">
+<div class="bg-[#161b22] border border-[#30363d] p-md flex flex-col gap-sm hover:border-[#58a6ff] transition-colors cursor-pointer group">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<span class="text-xs font-bold text-on-surface">October 06, 2023</span>
+<span class="text-[10px] text-secondary uppercase font-bold tracking-tighter">Profit: +$2,100</span>
+</div>
+<div class="flex gap-1 text-primary-container">
+<span class="material-symbols-outlined" style="font-size: 16px; font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-size: 16px; font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-size: 16px; font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-size: 16px; font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-size: 16px; font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<p class="text-sm text-[#8b949e] line-clamp-2">Strong trend continuation in AI sectors. Entered NVDA long on VWAP bounce. Overall market breadth was positive throughout the afternoon session...</p>
+</div>
+<div class="bg-[#161b22] border border-[#30363d] p-md flex flex-col gap-sm hover:border-[#58a6ff] transition-colors cursor-pointer group">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<span class="text-xs font-bold text-on-surface">October 05, 2023</span>
+<span class="text-[10px] text-tertiary uppercase font-bold tracking-tighter">Loss: -$450</span>
+</div>
+<div class="flex gap-1 text-primary-container">
+<span class="material-symbols-outlined" style="font-size: 16px; font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-size: 16px; font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-size: 16px;">star</span>
+<span class="material-symbols-outlined" style="font-size: 16px;">star</span>
+<span class="material-symbols-outlined" style="font-size: 16px;">star</span>
+</div>
+</div>
+<p class="text-sm text-[#8b949e] line-clamp-2">Choppy price action. Attempted breakout trade on TSLA that failed. Need to be more patient with trade location on low volume days...</p>
+</div>
+<div class="bg-[#161b22] border border-[#30363d] p-md flex flex-col gap-sm hover:border-[#58a6ff] transition-colors cursor-pointer group">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<span class="text-xs font-bold text-on-surface">October 03, 2023</span>
+<span class="text-[10px] text-secondary uppercase font-bold tracking-tighter">Profit: +$820</span>
+</div>
+<div class="flex gap-1 text-primary-container">
+<span class="material-symbols-outlined" style="font-size: 16px; font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-size: 16px; font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-size: 16px; font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-size: 16px;">star</span>
+<span class="material-symbols-outlined" style="font-size: 16px;">star</span>
+</div>
+</div>
+<p class="text-sm text-[#8b949e] line-clamp-2">Scalp trades on small-cap volatility. Quick entries and exits. Market summary showed heavy rotation into energy stocks...</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

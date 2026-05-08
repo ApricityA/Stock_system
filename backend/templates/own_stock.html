@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>QUANT_CORE - 自选股管理</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-container": "#003a6b",
+                        "secondary-container": "#26a641",
+                        "error-container": "#93000a",
+                        "surface-container-high": "#272a30",
+                        "primary-fixed-dim": "#a2c9ff",
+                        "surface-bright": "#36393f",
+                        "on-tertiary-fixed-variant": "#93000d",
+                        "secondary": "#66df72",
+                        "tertiary-container": "#ff7b70",
+                        "on-secondary-fixed-variant": "#005318",
+                        "primary-container": "#58a6ff",
+                        "on-primary": "#00315c",
+                        "on-primary-fixed-variant": "#004882",
+                        "tertiary-fixed": "#ffdad6",
+                        "on-background": "#e0e2ea",
+                        "secondary-fixed": "#83fc8b",
+                        "tertiary": "#ffb4ac",
+                        "inverse-primary": "#0060aa",
+                        "surface-container": "#1c2025",
+                        "on-secondary-container": "#00320b",
+                        "inverse-surface": "#e0e2ea",
+                        "on-primary-fixed": "#001c38",
+                        "surface": "#101419",
+                        "outline-variant": "#414752",
+                        "inverse-on-surface": "#2d3136",
+                        "on-tertiary": "#690007",
+                        "surface-container-highest": "#32353b",
+                        "tertiary-fixed-dim": "#ffb4ac",
+                        "primary-fixed": "#d3e4ff",
+                        "on-tertiary-fixed": "#410002",
+                        "on-surface-variant": "#c0c7d4",
+                        "on-error-container": "#ffdad6",
+                        "outline": "#8b919d",
+                        "on-tertiary-container": "#790009",
+                        "secondary-fixed-dim": "#66df72",
+                        "primary": "#a2c9ff",
+                        "surface-container-low": "#181c21",
+                        "on-surface": "#e0e2ea",
+                        "on-secondary-fixed": "#002105",
+                        "on-secondary": "#00390e",
+                        "on-error": "#690005",
+                        "surface-variant": "#32353b",
+                        "surface-dim": "#101419",
+                        "surface-container-lowest": "#0b0e14",
+                        "surface-tint": "#a2c9ff",
+                        "error": "#ffb4ab",
+                        "background": "#101419"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "12px",
+                        "base": "4px",
+                        "sm": "8px",
+                        "xl": "32px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "data-tabular": ["Consolas, Monaco, monospace"],
+                        "body-sm": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "heading-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "data-tabular": ["13px", {"lineHeight": "1", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-caps": ["11px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "display-lg": ["32px", {"lineHeight": "1.25", "fontWeight": "600"}],
+                        "heading-md": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #101419; }
+        ::-webkit-scrollbar-thumb { background: #30363d; }
+        ::-webkit-scrollbar-thumb:hover { background: #414752; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-sm antialiased overflow-hidden">
+<!-- Sidebar Navigation Shell -->
+<aside class="fixed left-0 top-0 h-full flex flex-col bg-[#161b22] h-screen w-64 border-r border-[#30363d] z-50">
+<div class="p-lg flex flex-col gap-xs">
+<h1 class="font-black text-lg tracking-tighter text-[#f0f6fc]">QUANT_CORE</h1>
+<span class="text-[10px] text-outline font-mono uppercase tracking-widest">Terminal v2.4</span>
+</div>
+<nav class="flex-1 mt-md">
+<!-- Navigation Items Mapping -->
+<div class="px-sm flex flex-col gap-1">
+<div class="flex items-center gap-md p-sm font-['Inter'] font-medium text-xs uppercase tracking-wider text-[#8b949e] hover:text-[#f0f6fc] hover:bg-[#21262d] transition-colors duration-150 cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>仪表盘</span>
+</div>
+<div class="flex items-center gap-md p-sm font-['Inter'] font-medium text-xs uppercase tracking-wider text-[#8b949e] hover:text-[#f0f6fc] hover:bg-[#21262d] transition-colors duration-150 cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined" data-icon="filter_list">filter_list</span>
+<span>选股器</span>
+</div>
+<div class="flex items-center gap-md p-sm font-['Inter'] font-medium text-xs uppercase tracking-wider text-[#8b949e] hover:text-[#f0f6fc] hover:bg-[#21262d] transition-colors duration-150 cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+<span>交易日志</span>
+</div>
+<!-- ACTIVE STATE: Watchlist -->
+<div class="flex items-center gap-md p-sm font-['Inter'] font-medium text-xs uppercase tracking-wider bg-[#0d1117] text-[#58a6ff] border-l-2 border-[#58a6ff] cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span>自选股</span>
+</div>
+<div class="flex items-center gap-md p-sm font-['Inter'] font-medium text-xs uppercase tracking-wider text-[#8b949e] hover:text-[#f0f6fc] hover:bg-[#21262d] transition-colors duration-150 cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined" data-icon="notifications_active">notifications_active</span>
+<span>预警</span>
+</div>
+</div>
+<div class="mt-xl px-md">
+<button class="w-full bg-primary-container text-on-primary-container font-bold text-xs uppercase tracking-widest py-sm rounded-DEFAULT flex items-center justify-center gap-sm transition-opacity hover:opacity-90"><span class="material-symbols-outlined text-sm" data-icon="add_circle">add_circle</span>新交易</button>
+</div>
+</nav>
+<div class="p-md border-t border-[#30363d]">
+<div class="flex items-center gap-md p-sm font-['Inter'] font-medium text-xs uppercase tracking-wider text-[#8b949e] hover:text-[#f0f6fc] hover:bg-[#21262d] transition-colors duration-150 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>设置</span>
+</div>
+<div class="flex items-center gap-md p-sm font-['Inter'] font-medium text-xs uppercase tracking-wider text-[#8b949e] hover:text-[#f0f6fc] hover:bg-[#21262d] transition-colors duration-150 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span>支持</span>
+</div>
+</div>
+</aside>
+<!-- Header / Top Bar -->
+<header class="fixed top-0 right-0 left-64 h-14 bg-[#161b22] border-b border-[#30363d] flex justify-between items-center px-6 z-40">
+<div class="flex items-center gap-lg w-1/2">
+<div class="relative w-full max-w-md group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#8b949e] text-sm" data-icon="search">search</span>
+<input class="w-full bg-[#0d1117] border border-[#30363d] rounded-DEFAULT py-1.5 pl-10 pr-4 text-xs font-data-tabular text-on-surface focus:outline-none focus:border-[#58a6ff] focus:ring-1 focus:ring-[#58a6ff] placeholder:text-[#414752] transition-all" placeholder="搜索标的 (如：代码、名称)" type="text"/>
+</div>
+<button class="bg-transparent border border-[#30363d] text-[#f0f6fc] text-[10px] font-bold uppercase tracking-widest px-md py-1.5 rounded-DEFAULT hover:bg-[#21262d] transition-colors flex items-center gap-xs"><span class="material-symbols-outlined text-sm" data-icon="add">add</span>添加自选</button>
+</div>
+<div class="flex items-center gap-md">
+<div class="flex items-center gap-sm px-md border-r border-[#30363d]">
+<span class="material-symbols-outlined text-[#8b949e] cursor-pointer hover:text-[#f0f6fc]" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span class="text-xs font-data-tabular text-secondary">$142,850.42</span>
+</div>
+<span class="material-symbols-outlined text-[#8b949e] cursor-pointer hover:text-[#f0f6fc]" data-icon="language">language</span>
+<span class="material-symbols-outlined text-[#8b949e] cursor-pointer hover:text-[#f0f6fc]" data-icon="grid_view">grid_view</span>
+<div class="h-8 w-8 rounded-full bg-[#30363d] overflow-hidden border border-[#414752] cursor-pointer">
+<img class="h-full w-full object-cover" data-alt="A professional headshot of a male quantitative trader in a modern, low-lit financial office. The lighting is cold and atmospheric with blue and grey tones, creating a sense of technical expertise and focus. The background shows blurred trading terminal screens with glowing data charts. The overall mood is serious, elite, and high-performance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIC7DlZ-YjBV7Ugg3RbrG9LA9XtsbAkTq9MV9wn_bBihIoZLQQoDGcwKrL7mKibIpOnXjkVQAZeKLaWaC6QvYoNPonWxmUgP7ycKQPArpS5t27oNmjS0L-3lr5JqNNNkDwM_CVo1rGUbesJ4TZhMxqvfCvfXthJh0l5svwb23GYB-jiaCIhX8Uf3xaP4Gah7VgBlE_Fog_B290xDCHblu8GxPGYNXqC8o6O9OnD0I-37OXS5rsAexYhFDxonihn-ao5HmfWcbk1udY"/>
+</div>
+</div>
+</header>
+<!-- Main Content Grid -->
+<main class="ml-64 mt-14 p-gutter h-[calc(100vh-3.5rem)] flex gap-gutter overflow-hidden">
+<!-- Left Column: Groups Sidebar -->
+<aside class="w-72 flex flex-col gap-gutter shrink-0">
+<div class="bg-[#161b22] border border-[#30363d] flex-1 flex flex-col overflow-hidden">
+<div class="p-md border-b border-[#30363d] flex justify-between items-center">
+<h2 class="text-label-caps font-label-caps text-on-surface-variant">自选分组</h2>
+<span class="material-symbols-outlined text-sm text-outline cursor-pointer hover:text-primary-container" data-icon="create_new_folder">create_new_folder</span>
+</div>
+<div class="flex-1 overflow-y-auto py-sm">
+<!-- Group Item -->
+<div class="group px-md py-3 flex items-center justify-between cursor-pointer hover:bg-[#1f242b] transition-colors border-l-2 border-transparent hover:border-[#58a6ff]">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-[#8b949e] text-lg" data-icon="folder" style="font-variation-settings: 'FILL' 1;">folder</span>
+<div>
+<p class="text-xs font-bold text-[#f0f6fc] uppercase tracking-wide">短线交易</p>
+<p class="text-[10px] text-outline font-data-tabular">12 只标的 • +2.4% 今日</p>
+</div>
+</div>
+<span class="text-[10px] bg-[#21262d] text-outline px-1.5 py-0.5 rounded-DEFAULT group-hover:bg-[#30363d]">12</span>
+</div>
+<!-- Group Item Active -->
+<div class="group px-md py-3 flex items-center justify-between cursor-pointer bg-[#0d1117] border-l-2 border-[#58a6ff]">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary-container text-lg" data-icon="folder_open" style="font-variation-settings: 'FILL' 1;">folder_open</span>
+<div>
+<p class="text-xs font-bold text-[#58a6ff] uppercase tracking-wide">成长策略</p>
+<p class="text-[10px] text-outline font-data-tabular">8 只标的 • -0.8% 今日</p>
+</div>
+</div>
+<span class="text-[10px] bg-[#161b22] text-[#58a6ff] border border-[#30363d] px-1.5 py-0.5 rounded-DEFAULT">8</span>
+</div>
+<!-- Group Item -->
+<div class="group px-md py-3 flex items-center justify-between cursor-pointer hover:bg-[#1f242b] transition-colors border-l-2 border-transparent hover:border-[#58a6ff]">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-[#8b949e] text-lg" data-icon="folder" style="font-variation-settings: 'FILL' 1;">folder</span>
+<div>
+<p class="text-xs font-bold text-[#f0f6fc] uppercase tracking-wide">指数追踪</p>
+<p class="text-[10px] text-outline font-data-tabular">5 只标的 • +0.1% 今日</p>
+</div>
+</div>
+<span class="text-[10px] bg-[#21262d] text-outline px-1.5 py-0.5 rounded-DEFAULT group-hover:bg-[#30363d]">5</span>
+</div>
+<!-- Group Item -->
+<div class="group px-md py-3 flex items-center justify-between cursor-pointer hover:bg-[#1f242b] transition-colors border-l-2 border-transparent hover:border-[#58a6ff]">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-[#8b949e] text-lg" data-icon="folder" style="font-variation-settings: 'FILL' 1;">folder</span>
+<div>
+<p class="text-xs font-bold text-[#f0f6fc] uppercase tracking-wide">加密货币/其他</p>
+<p class="text-[10px] text-outline font-data-tabular">24 只标的 • +12.4% 今日</p>
+</div>
+</div>
+<span class="text-[10px] bg-[#21262d] text-outline px-1.5 py-0.5 rounded-DEFAULT group-hover:bg-[#30363d]">24</span>
+</div>
+</div>
+<div class="p-md bg-[#0d1117] border-t border-[#30363d]">
+<div class="flex items-center justify-between mb-sm">
+<span class="text-[10px] font-bold text-outline">快速统计</span>
+<span class="text-[10px] text-secondary font-data-tabular">看多</span>
+</div>
+<div class="grid grid-cols-2 gap-sm">
+<div class="p-sm bg-[#161b22] border border-[#30363d]">
+<p class="text-[9px] text-outline mb-1 uppercase">平均收益</p>
+<p class="text-xs font-data-tabular text-secondary">看多</p>
+</div>
+<div class="p-sm bg-[#161b22] border border-[#30363d]">
+<p class="text-[9px] text-outline mb-1 uppercase">波动率</p>
+<p class="text-xs font-data-tabular text-tertiary">1.42σ</p>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content: Watchlist Table -->
+<section class="flex-1 flex flex-col gap-gutter min-w-0">
+<!-- Table Controls & Bulk Actions -->
+<div class="bg-[#161b22] border border-[#30363d] p-sm flex items-center justify-between">
+<div class="flex items-center gap-md">
+<div class="flex items-center gap-sm pr-md border-r border-[#30363d]">
+<input class="rounded-DEFAULT bg-[#0d1117] border-[#30363d] text-primary-container focus:ring-0" type="checkbox"/>
+<span class="text-[10px] font-bold text-[#f0f6fc] uppercase">视图:</span>
+</div>
+<!-- Bulk Action Buttons (Visible when selections exist) -->
+<div class="flex items-center gap-sm">
+<button class="flex items-center gap-xs px-sm py-1 bg-transparent border border-[#30363d] text-[#8b949e] text-[10px] font-bold uppercase hover:bg-tertiary-container hover:text-on-tertiary-container transition-colors"><span class="material-symbols-outlined text-xs" data-icon="delete">delete</span>批量删除</button>
+<button class="flex items-center gap-xs px-sm py-1 bg-transparent border border-[#30363d] text-[#8b949e] text-[10px] font-bold uppercase hover:bg-secondary-container hover:text-on-secondary-container transition-colors"><span class="material-symbols-outlined text-xs" data-icon="drive_file_move">drive_file_move</span>移动分组</button>
+</div>
+</div>
+<div class="flex items-center gap-sm">
+<span class="text-[10px] text-outline font-data-tabular uppercase">视图:</span>
+<select class="bg-[#0d1117] border-[#30363d] text-[10px] font-bold text-[#f0f6fc] py-1 px-3 rounded-DEFAULT focus:ring-0">
+<option>详细列表</option>
+<option>MINIMAL</option>
+<option>CHART GRID</option>
+</select>
+</div>
+</div>
+<!-- Main Table Panel -->
+<div class="bg-[#161b22] border border-[#30363d] flex-1 flex flex-col overflow-hidden">
+<div class="flex-1 overflow-x-auto">
+<table class="w-full text-left border-collapse min-w-[800px]">
+<thead>
+<tr class="border-b border-[#30363d] bg-[#1c2128]">
+<th class="w-12 p-md"></th>
+<th class="p-md text-label-caps font-label-caps text-outline uppercase">代码</th>
+<th class="p-md text-label-caps font-label-caps text-outline uppercase">名称</th>
+<th class="p-md text-label-caps font-label-caps text-outline uppercase text-right">价格</th>
+<th class="p-md text-label-caps font-label-caps text-outline uppercase text-right">涨跌幅 %</th>
+<th class="p-md text-label-caps font-label-caps text-outline uppercase text-right">成交量</th>
+<th class="p-md text-label-caps font-label-caps text-outline uppercase">添加日期</th>
+<th class="p-md text-label-caps font-label-caps text-outline uppercase text-center">操作</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#30363d]/50">
+<!-- Table Row -->
+<tr class="hover:bg-[#1f242b] transition-colors group">
+<td class="p-md"><input class="rounded-DEFAULT bg-[#0d1117] border-[#30363d] text-primary-container focus:ring-0" type="checkbox"/></td>
+<td class="p-md font-data-tabular text-xs font-bold text-[#f0f6fc]">NVDA</td>
+<td class="p-md text-xs text-on-surface-variant">NVIDIA Corporation</td>
+<td class="p-md font-data-tabular text-xs text-right text-[#f0f6fc]">128.45</td>
+<td class="p-md font-data-tabular text-xs text-right text-secondary">+4.25%</td>
+<td class="p-md font-data-tabular text-xs text-right text-outline">42.8M</td>
+<td class="p-md font-data-tabular text-[11px] text-outline">2023-11-14</td>
+<td class="p-md text-center">
+<div class="flex items-center justify-center gap-md opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-sm text-outline hover:text-primary-container cursor-pointer" data-icon="notifications_active">notifications_active</span>
+<span class="material-symbols-outlined text-sm text-outline hover:text-tertiary-container cursor-pointer" data-icon="delete">delete</span>
+</div>
+</td>
+</tr>
+<!-- Table Row -->
+<tr class="hover:bg-[#1f242b] transition-colors group">
+<td class="p-md"><input checked="" class="rounded-DEFAULT bg-[#0d1117] border-[#30363d] text-primary-container focus:ring-0" type="checkbox"/></td>
+<td class="p-md font-data-tabular text-xs font-bold text-[#f0f6fc]">AAPL</td>
+<td class="p-md text-xs text-on-surface-variant">Apple Inc.</td>
+<td class="p-md font-data-tabular text-xs text-right text-[#f0f6fc]">182.10</td>
+<td class="p-md font-data-tabular text-xs text-right text-tertiary">-1.12%</td>
+<td class="p-md font-data-tabular text-xs text-right text-outline">68.2M</td>
+<td class="p-md font-data-tabular text-[11px] text-outline">2023-11-10</td>
+<td class="p-md text-center">
+<div class="flex items-center justify-center gap-md opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-sm text-outline hover:text-primary-container cursor-pointer" data-icon="notifications_active">notifications_active</span>
+<span class="material-symbols-outlined text-sm text-outline hover:text-tertiary-container cursor-pointer" data-icon="delete">delete</span>
+</div>
+</td>
+</tr>
+<!-- Table Row -->
+<tr class="hover:bg-[#1f242b] transition-colors group">
+<td class="p-md"><input class="rounded-DEFAULT bg-[#0d1117] border-[#30363d] text-primary-container focus:ring-0" type="checkbox"/></td>
+<td class="p-md font-data-tabular text-xs font-bold text-[#f0f6fc]">TSLA</td>
+<td class="p-md text-xs text-on-surface-variant">Tesla, Inc.</td>
+<td class="p-md font-data-tabular text-xs text-right text-[#f0f6fc]">238.21</td>
+<td class="p-md font-data-tabular text-xs text-right text-secondary">+0.88%</td>
+<td class="p-md font-data-tabular text-xs text-right text-outline">102.4M</td>
+<td class="p-md font-data-tabular text-[11px] text-outline">2023-12-01</td>
+<td class="p-md text-center">
+<div class="flex items-center justify-center gap-md opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-sm text-outline hover:text-primary-container cursor-pointer" data-icon="notifications_active">notifications_active</span>
+<span class="material-symbols-outlined text-sm text-outline hover:text-tertiary-container cursor-pointer" data-icon="delete">delete</span>
+</div>
+</td>
+</tr>
+<!-- Table Row -->
+<tr class="hover:bg-[#1f242b] transition-colors group">
+<td class="p-md"><input class="rounded-DEFAULT bg-[#0d1117] border-[#30363d] text-primary-container focus:ring-0" type="checkbox"/></td>
+<td class="p-md font-data-tabular text-xs font-bold text-[#f0f6fc]">MSFT</td>
+<td class="p-md text-xs text-on-surface-variant">Microsoft Corp.</td>
+<td class="p-md font-data-tabular text-xs text-right text-[#f0f6fc]">374.01</td>
+<td class="p-md font-data-tabular text-xs text-right text-secondary">+1.45%</td>
+<td class="p-md font-data-tabular text-xs text-right text-outline">22.1M</td>
+<td class="p-md font-data-tabular text-[11px] text-outline">2023-11-20</td>
+<td class="p-md text-center">
+<div class="flex items-center justify-center gap-md opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-sm text-outline hover:text-primary-container cursor-pointer" data-icon="notifications_active">notifications_active</span>
+<span class="material-symbols-outlined text-sm text-outline hover:text-tertiary-container cursor-pointer" data-icon="delete">delete</span>
+</div>
+</td>
+</tr>
+<!-- Table Row -->
+<tr class="hover:bg-[#1f242b] transition-colors group">
+<td class="p-md"><input class="rounded-DEFAULT bg-[#0d1117] border-[#30363d] text-primary-container focus:ring-0" type="checkbox"/></td>
+<td class="p-md font-data-tabular text-xs font-bold text-[#f0f6fc]">AMD</td>
+<td class="p-md text-xs text-on-surface-variant">Advanced Micro Devices</td>
+<td class="p-md font-data-tabular text-xs text-right text-[#f0f6fc]">145.20</td>
+<td class="p-md font-data-tabular text-xs text-right text-secondary">+2.10%</td>
+<td class="p-md font-data-tabular text-xs text-right text-outline">54.9M</td>
+<td class="p-md font-data-tabular text-[11px] text-outline">2024-01-05</td>
+<td class="p-md text-center">
+<div class="flex items-center justify-center gap-md opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-sm text-outline hover:text-primary-container cursor-pointer" data-icon="notifications_active">notifications_active</span>
+<span class="material-symbols-outlined text-sm text-outline hover:text-tertiary-container cursor-pointer" data-icon="delete">delete</span>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination / Summary -->
+<div class="p-sm bg-[#1c2128] border-t border-[#30363d] flex justify-between items-center">
+<span class="text-[10px] text-outline font-data-tabular">SHOWING 5 OF 42 ASSETS</span>
+<div class="flex items-center gap-sm">
+<button class="p-1 border border-[#30363d] text-outline hover:bg-[#30363d] transition-colors">
+<span class="material-symbols-outlined text-xs" data-icon="chevron_left">chevron_left</span>
+</button>
+<span class="text-[10px] font-bold text-[#f0f6fc] font-data-tabular px-2">视图:</span>
+<button class="p-1 border border-[#30363d] text-outline hover:bg-[#30363d] transition-colors">
+<span class="material-symbols-outlined text-xs" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Column: Price Alert Panel -->
+<aside class="w-80 flex flex-col gap-gutter shrink-0">
+<!-- Price Alert Modal/Section -->
+<div class="bg-[#161b22] border border-[#30363d] p-md flex flex-col gap-md h-fit">
+<div class="flex justify-between items-center border-b border-[#30363d] pb-sm">
+<h2 class="text-label-caps font-label-caps text-on-surface-variant">设置价格预警</h2>
+<span class="text-[9px] bg-primary-container/10 text-primary-container px-1.5 py-0.5 rounded-DEFAULT">运行中</span>
+</div>
+<div class="flex flex-col gap-sm">
+<label class="text-[10px] font-bold text-outline uppercase tracking-wider">目标价格</label>
+<div class="flex items-center gap-md p-sm bg-[#0d1117] border border-[#30363d] rounded-DEFAULT">
+<span class="font-data-tabular text-xs text-[#f0f6fc]">NVDA</span>
+<span class="text-[10px] text-outline">支持</span>
+</div>
+</div>
+<div class="flex flex-col gap-sm">
+<label class="text-[10px] font-bold text-outline uppercase tracking-wider">Target Price ($)</label>
+<input class="w-full bg-[#0d1117] border border-[#30363d] rounded-DEFAULT py-1.5 px-3 text-xs font-data-tabular text-[#f0f6fc] focus:outline-none focus:border-primary-container transition-all" type="number" value="135.00"/>
+</div>
+<div class="grid grid-cols-2 gap-sm">
+<button class="py-2 bg-transparent border border-[#30363d] text-on-surface text-[10px] font-bold uppercase tracking-widest hover:bg-[#21262d] transition-colors">高于时</button>
+<button class="py-2 bg-[#58a6ff] border border-[#58a6ff] text-on-primary-container text-[10px] font-bold uppercase tracking-widest hover:opacity-90 transition-opacity">低于时</button>
+</div>
+<div class="flex items-center gap-sm mt-xs">
+<input class="rounded-DEFAULT bg-[#0d1117] border-[#30363d] text-primary-container focus:ring-0" id="once" type="checkbox"/>
+<label class="text-[10px] text-outline uppercase" for="once">仅触发一次</label>
+</div>
+<button class="w-full bg-secondary-container text-on-secondary-container font-bold text-[11px] uppercase tracking-widest py-3 rounded-DEFAULT hover:opacity-90 transition-opacity mt-md flex items-center justify-center gap-sm"><span class="material-symbols-outlined text-sm" data-icon="notifications">notifications</span>开启预警</button>
+</div>
+<!-- Mini Performance Card -->
+<div class="bg-[#161b22] border border-[#30363d] overflow-hidden">
+<div class="p-md border-b border-[#30363d]">
+<h2 class="text-label-caps font-label-caps text-on-surface-variant">市场背景</h2>
+</div>
+<div class="p-md flex flex-col gap-md">
+<div class="flex items-center justify-between">
+<span class="text-xs font-bold text-[#f0f6fc]">S&amp;P 500</span>
+<div class="text-right">
+<span class="text-xs font-data-tabular text-secondary">+0.42%</span>
+<p class="text-[9px] text-outline font-data-tabular">4,502.12</p>
+</div>
+</div>
+<div class="w-full h-12 bg-[#0d1117] border border-[#30363d] relative overflow-hidden flex items-end px-1 gap-px">
+<!-- Mock chart bars -->
+<div class="flex-1 bg-secondary opacity-30 h-[20%]"></div>
+<div class="flex-1 bg-secondary opacity-40 h-[35%]"></div>
+<div class="flex-1 bg-secondary opacity-50 h-[45%]"></div>
+<div class="flex-1 bg-tertiary opacity-30 h-[30%]"></div>
+<div class="flex-1 bg-secondary opacity-60 h-[60%]"></div>
+<div class="flex-1 bg-secondary opacity-40 h-[40%]"></div>
+<div class="flex-1 bg-secondary opacity-80 h-[85%]"></div>
+<div class="flex-1 bg-secondary opacity-60 h-[70%]"></div>
+<div class="flex-1 bg-secondary opacity-90 h-[95%]"></div>
+<div class="flex-1 bg-secondary opacity-70 h-[80%]"></div>
+</div>
+</div>
+</div>
+<!-- System Status -->
+<div class="mt-auto bg-[#161b22] border border-[#30363d] p-md">
+<div class="flex items-center gap-sm mb-sm">
+<div class="w-2 h-2 rounded-full bg-secondary-container"></div>
+<span class="text-[10px] font-bold text-on-surface uppercase tracking-widest">数据状态：实时</span>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[9px] text-outline font-data-tabular">
+<span>NASDAQ L1</span>
+<span class="text-secondary">支持</span>
+</div>
+<div class="flex justify-between text-[9px] text-outline font-data-tabular">
+<span>NYSE L1</span>
+<span class="text-secondary">支持</span>
+</div>
+<div class="flex justify-between text-[9px] text-outline font-data-tabular">
+<span>DATA LATENCY</span>
+<span>支持</span>
+</div>
+</div>
+</div>
+</aside>
+</main>
+<!-- Context Menu Hint -->
+<div class="fixed bottom-4 right-4 bg-[#21262d] border border-[#30363d] px-md py-1.5 rounded-full shadow-2xl flex items-center gap-sm z-50">
+<span class="material-symbols-outlined text-sm text-[#58a6ff]" data-icon="mouse">mouse</span>
+<span class="text-[10px] text-on-surface font-bold uppercase tracking-widest">右键点击分组以显示更多选项</span>
+</div>
+</body></html>
